@@ -29,7 +29,7 @@ void preorder (binary_tree *root) {
 void inorder (binary_tree *root) {
   if(root) {
     inorder(root-> left);
-    printf("%d| ", root -> data);
+    printf("%d, ", root -> data);
     inorder(root -> right);
 
   }
@@ -263,3 +263,4 @@ binary_tree *insertAvlTree (binary_tree *root, int key) {
   return createNodeAvlTree(root, root, key);
 
 }
+
