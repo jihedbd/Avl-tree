@@ -62,12 +62,12 @@ void levelOrder (binary_tree *root) {
   
 }
 
-int height (binary_tree *root) {
-  if(!root) return 0;
-  int l = height(root -> left);
-  int r = height (root -> right);
-  return l > r ? l + 1 : r + 1;
-}
+// int height (binary_tree *root) {
+//   if(!root) return 0;
+//   int l = height(root -> left);
+//   int r = height (root -> right);
+//   return l > r ? l + 1 : r + 1;
+// }
 
 int NodeHeight(binary_tree *node) {
 
@@ -203,7 +203,6 @@ int calculateBalanceFactor (binary_tree *node) {
 }
 
 binary_tree *createNodeAvlTree (binary_tree *curr, binary_tree *prev, int key) {
-    // printf("DEBUG: Entering createNodeAvlTree with curr=%p, prev=%p, key=%d\n", (void*)curr, (void*)prev, key);
 
   // classic bst insertion
   if (!curr)
@@ -264,3 +263,89 @@ binary_tree *insertAvlTree (binary_tree *root, int key) {
 
 }
 
+
+// avl deletion
+
+binary_tree *inorderPredecessor (binary_tree *node) {
+  node = node -> left;
+
+  while (node -> right) node = node -> right;
+
+  return node;
+}
+
+binary_tree *inorderSuccessor (binary_tree *node) {
+  node = node -> right;
+
+  while (node -> left) node = node -> left;
+
+  return node;
+}
+
+binary_tree *refactorTree(binary_tree *curr, binary_tree *prev, int key) {
+  if(!curr) return NULL;
+
+  if (curr -> data > key) curr -> left = refactorTree(curr -> left, curr, key);
+  else if (curr -> data < key) curr -> right = refactorTree(curr -> right, curr, key);
+  
+  else if (curr -> data == key)
+  {
+    
+    int leftSubTreeHeight = curr -> left ? (curr -> left) -> height : -1;
+    int rightSubTreeHeight = curr -> right ? (curr -> right) -> height : -1;
+    binary_tree *swapNode = NULL;
+
+    if ( (leftSubTreeHeight < rightSubTreeHeight && leftSubTreeHeight > -1) ||  leftSubTreeHeight > rightSubTreeHeight) 
+    {
+      swapNode = inorderPredecessor(curr);
+      curr -> data = swapNode -> data;
+      curr -> left = refactorTree(curr -> left, curr, swapNode -> data);
+    }
+    else if ( (leftSubTreeHeight > rightSubTreeHeight && rightSubTreeHeight > -1) || rightSubTreeHeight!= -1 )
+    {
+      swapNode = inorderSuccessor(curr);
+      curr -> data = swapNode -> data;
+      curr -> right = refactorTree(curr -> right, curr, swapNode -> data);
+    }
+    else if (leftSubTreeHeight == -1 && rightSubTreeHeight == -1) 
+    {
+      if (prev || ( !prev && !(curr -> height) ) ) return NULL;
+    }
+  }
+
+  curr -> height = NodeHeight(curr);
+  prev = !prev ? curr : prev;
+  int balanceFactor = calculateBalanceFactor(curr);
+
+
+  if( balanceFactor < -1 || balanceFactor > 1 )
+  {
+    binary_tree *child = NULL;
+    int childBalanceFactor;
+
+    if(balanceFactor < 0)
+    {
+      child = curr -> right;
+      childBalanceFactor = calculateBalanceFactor(child);
+      if (childBalanceFactor < 0) curr = rrRotation(curr, prev);
+      else curr = rlRotation(curr, prev);
+    }
+    else
+    {
+      child = curr -> left;
+      childBalanceFactor = calculateBalanceFactor(child);
+      if (childBalanceFactor < 0) curr = lrRotation(curr, prev);
+      else curr = llRotation(curr, prev);
+    }
+  }
+
+  int height = curr -> height; 
+  if(curr != prev && height == prev -> height) prev -> height++;
+  
+  return curr;
+
+}
+
+binary_tree *deleteNodeAvlTree(binary_tree *root, int key) {
+  return refactorTree(root, NULL, key);
+}

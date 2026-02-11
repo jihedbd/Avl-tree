@@ -20,11 +20,12 @@ void levelOrder (binary_tree *root);
 
 void display_tree(binary_tree *root);
 
-int height (binary_tree *root);
+// int height (binary_tree *root);
 
 // avl insert
 binary_tree *insertAvlTree (binary_tree *root, int key);
 
+binary_tree *insertBstGeneric(binary_tree *root, int key);
 // avl deletion
 binary_tree *deleteNodeAvlTree(binary_tree *root, int key);
 #endif

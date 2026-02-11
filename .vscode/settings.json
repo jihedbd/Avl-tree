@@ -1,0 +1,9 @@
+{
+  "makefile.launchConfigurations": [
+    {
+      "cwd": "/home/lenovo/Desktop/dsa/8-trees/structured",
+      "binaryPath": "/home/lenovo/Desktop/dsa/8-trees/structured/program",
+      "binaryArgs": []
+    }
+  ]
+}

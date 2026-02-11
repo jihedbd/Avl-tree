@@ -1,0 +1,46 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Tree Program",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/program",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Skip glibc functions",
+                    "text": "skip -gfi /usr/include/*.h",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Skip malloc",
+                    "text": "skip function malloc",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Skip calloc",
+                    "text": "skip function calloc",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Skip free",
+                    "text": "skip function free",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Skip realloc",
+                    "text": "skip function realloc",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "make",
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+    ]
+}
