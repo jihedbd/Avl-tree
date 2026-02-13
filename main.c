@@ -79,14 +79,6 @@ bool search(binary_tree *root, int value) {
     return value < root->data ? search(root->left, value) : search(root->right, value);
 }
 
-// Free entire tree
-void free_tree(binary_tree *root) {
-    if (!root) return;
-    free_tree(root->left);
-    free_tree(root->right);
-    free(root);
-}
-
 // Optional: Visual debug print (shows data, height, balance factor)
 void print_tree(binary_tree *root, int indent) {
     if (!root) return;
@@ -113,7 +105,7 @@ void run_all_deletion_tests() {
         }
         assert(validate_avl_tree(root, "PRE-FLIGHT: Initial AVL insertion") && 
                "❌ AVL INSERTION IS BROKEN! Fix insertAvlTree() first.");
-        free_tree(root);
+        freeTree(root);
         printf("✅ PRE-FLIGHT CHECK PASSED: AVL insertion works correctly\n\n");
     }
 
@@ -146,7 +138,7 @@ void run_all_deletion_tests() {
         assert(!search(root, 20) && "data=20 should be deleted");
         assert(search(root, 50) && search(root, 30) && search(root, 40) && "Other nodes intact");
         assert(validate_avl_tree(root, "TEST 3: Post-deletion (leaf)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 3 PASSED: Delete leaf node\n");
     }
 
@@ -162,7 +154,7 @@ void run_all_deletion_tests() {
         assert(!search(root, 30) && "data=30 deleted");
         assert(search(root, 20) && search(root, 50) && "Children preserved");
         assert(validate_avl_tree(root, "TEST 4: Post-deletion (left-child-only)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 4 PASSED: Delete node with only left child\n");
     }
 
@@ -178,7 +170,7 @@ void run_all_deletion_tests() {
         assert(!search(root, 70) && "data=70 deleted");
         assert(search(root, 50) && search(root, 80) && "Children preserved");
         assert(validate_avl_tree(root, "TEST 5: Post-deletion (right-child-only)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 5 PASSED: Delete node with only right child\n");
     }
 
@@ -194,7 +186,7 @@ void run_all_deletion_tests() {
         assert(!search(root, 50) && "Root deleted");
         assert(search(root, 60) && "Successor (60) promoted");
         assert(validate_avl_tree(root, "TEST 6: Post-deletion (two children)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 6 PASSED: Delete node with two children\n");
     }
 
@@ -208,7 +200,7 @@ void run_all_deletion_tests() {
         assert(root == original && "Tree pointer unchanged");
         assert(search(root, 50) && "Original data still present");
         assert(validate_avl_tree(root, "TEST 7: Non-existent key deletion"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 7 PASSED: Delete non-existent key\n");
     }
 
@@ -223,7 +215,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 80);
         assert(!search(root, 80) && "data=80 deleted");
         assert(validate_avl_tree(root, "TEST 8: Post-deletion (LL rotation)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 8 PASSED: LL rotation after deletion\n");
     }
 
@@ -238,7 +230,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 70);
         assert(!search(root, 70) && "data=70 deleted");
         assert(validate_avl_tree(root, "TEST 9: Post-deletion (LR rotation)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 9 PASSED: LR rotation after deletion\n");
     }
 
@@ -253,7 +245,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 30);
         assert(!search(root, 30) && "data=30 deleted");
         assert(validate_avl_tree(root, "TEST 10: Post-deletion (RR rotation)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 10 PASSED: RR rotation after deletion\n");
     }
 
@@ -268,7 +260,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 30);
         assert(!search(root, 30) && "data=30 deleted");
         assert(validate_avl_tree(root, "TEST 11: Post-deletion (RL rotation)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 11 PASSED: RL rotation after deletion\n");
     }
 
@@ -282,7 +274,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 50);  // Delete root → triggers cascading rebalancing
         assert(!search(root, 50) && "Root deleted");
         assert(validate_avl_tree(root, "TEST 12: Post-deletion (cascading rotations)"));
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 12 PASSED: Cascading rotations after deletion\n");
     }
 
@@ -320,7 +312,7 @@ void run_all_deletion_tests() {
         root = deleteNodeAvlTree(root, 100);
         assert(!search(root, 100) && validate_avl_tree(root, "TEST 14b: Max deletion"));
         
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 14 PASSED: Boundary value deletions\n");
     }
 
@@ -337,7 +329,7 @@ void run_all_deletion_tests() {
             assert(!search(root, old_root_data) && "Old root not deleted");
             assert(validate_avl_tree(root, "TEST 15: Repeated root deletion"));
         }
-        free_tree(root);
+        freeTree(root);
         printf("✅ TEST 15 PASSED: Repeated root deletions\n");
     }
 
@@ -376,28 +368,22 @@ void run_all_deletion_tests() {
     printf("\n========================================\n");
     printf("🎉 ALL 18 TESTS PASSED SUCCESSFULLY!\n");
     printf("   • Insertion: insertAvlTree()\n");
-    printf("   • Node field: 'data'\n");
     printf("   • All rotations covered: LL, LR, RR, RL\n");
     printf("========================================\n");
 }
 
 int main () {
-  // int test_array [] = {30, 20, 10, 25, 5, 15, 40, 50, 35, 45, 60, 55, 1, 2, 3};
-  // int length = 15;
-  // binary_tree *root = NULL;
+  int test_array [] = {30, 20, 10, 25, 5, 15, 40, 50, 35, 45, 60, 55, 1, 2, 3};
+  int length = 15;
+  binary_tree *root = NULL;
 
-  // for (int *i = test_array; i < test_array + length; i++) root = insertAvlTree(root, *i);
+  for (int *i = test_array; i < test_array + length; i++) root = insertAvlTree(root, *i);
 
-  // printf("========================= inorder traversel ================================================\n");
-  // inorder(root);
-  // printf("\n============== inorder traversel should be =================================================");
-  // printf("\n1, 2, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60\n");
+  printf("========================= inorder traversel ================================================\n");
+  inorder(root);
+  printf("\n============== inorder traversel should be =================================================");
+  printf("\n1, 2, 3, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60\n");
   
-
-  // root = deleteNodeAvlTree(root, 2);
-  // inorder(root);
-
-  // Test 1: Basic functionality
   run_all_deletion_tests();
   return 0;
 
